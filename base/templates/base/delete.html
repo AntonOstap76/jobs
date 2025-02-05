@@ -1,13 +1,27 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<div class="container mx-auto px-4 py-6 mt-20">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Confirm Deletion</h2>
 
-<form method="POST" action="">
-    {%csrf_token%}
+        <form method="POST" action="" class="space-y-6">
+            {% csrf_token %}
+            
+            <p class="text-lg text-gray-700 text-center">Are you sure you want to delete "{{ obj }}"?</p>
 
-    <p>Are you sure you want to delete "{{obj}}"?</p>
-    <a href="{{request.META.HTTP_REFERER}}">Go Back </a>
-    <input type="submit" value="Confirm">
-</form>
+            <div class="flex justify-center space-x-4">
+                <!-- Go Back Link -->
+                <a href="{{ request.META.HTTP_REFERER }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                    Go Back
+                </a>
+            </div>
 
-{%endblock content%}
+            <div class="flex justify-center">
+                <!-- Confirm Button -->
+                <input type="submit" value="Confirm" class="w-full py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 transition duration-300">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

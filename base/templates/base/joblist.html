@@ -2,56 +2,89 @@
 
 {% block content %}
 
-<style>
-    .joblist-container{
-        display:grid;
-        grid-template-columns: 1fr 3fr;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Job List page</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job List Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+</head>
 
-<div class="joblist-container">
+<body class="bg-gray-100 text-gray-900 font-sans">
 
-    <div>
-        <h3>Browse Category</h3>
-        <hr>
+    <div class="container mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-center text-indigo-700 mb-8">Job List Page</h1>
 
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-        <div>
-            <a href="{%url 'job-list'%}">All</a>
+            <!-- Sidebar: Categories -->
+            <div class="col-span-1 bg-white p-6 rounded-lg shadow-lg space-y-6">
+                <h3 class="text-2xl font-semibold text-indigo-600">Browse Categories</h3>
+                <div class="space-y-4">
+                    <a href="{% url 'job-list' %}" class="text-indigo-600 hover:text-indigo-800 flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                        <span>All</span>
+                    </a>
+
+                    {% for category in categories %}
+                        <a href="{% url 'job-list' %}?q={{ category.name }}"
+                            class="text-indigo-600 hover:text-indigo-800 flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <span>{{ category.name }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Main Content: Job Listings -->
+            <div class="col-span-3 bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <form method="GET" action="{% url 'job-list' %}" class="flex space-x-2">
+                        <input type="text" name="q" placeholder="Search jobs..."
+                            class="px-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button type="submit"
+                            class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Search</button>
+                    </form>
+                    <h5 class="text-lg font-semibold text-gray-800">{{ job_count }} jobs available</h5>
+                </div>
+
+                {% for job in jobs %}
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-lg mb-6 transform hover:scale-105 transition duration-300">
+                        <div class="flex justify-between items-center mb-4">
+                            {% if request.user == job.created_by %}
+                                <a href="{% url 'update-job' job.id %}"
+                                    class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Edit</a>
+                                <a href="{% url 'delete-job' job.id %}"
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium">Delete</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex items-center space-x-2 mb-2">
+                            <a href="{% url 'profile' job.created_by.id %}" class="text-indigo-600 font-semibold hover:text-indigo-800">{{ job.created_by.username }}</a>
+                        </div>
+
+                        <h5 class="text-2xl font-semibold text-gray-900 mb-2">
+                            <a href="{% url 'job' job.id %}" class="hover:text-indigo-600">{{ job.title }}</a>
+                        </h5>
+                        <h4 class="text-xl text-indigo-600 font-bold mb-3">{{ job.salary }} zl</h4>
+                        <small class="text-gray-600">{{ job.category.name }}</small>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-
-        {% for category in categories%}
-        <div>
-            <a href="{%url 'job-list'%}?q={{category.name}}">{{category.name}}</a>
-        </div>
-        {%endfor%}
     </div>
 
-    <div>
-        <div>
-        <form method="GET" action="{% url 'job-list'%}">
-            <input type="text" name="q" placeholder="Search jobs...">
-        </form>
+</body>
 
-        <h5>{{job_count}} jobs available</h5>
-    </div>
-        {% for job in jobs %}
-        <div>
-            {% if request.user == job.created_by%}
-            <a href="{% url 'update-job' job.id %}">Edit</a>
-            <a href="{% url 'delete-job' job.id %}">Delete</a>
-            {%endif%}
-            
-            <a href="{% url 'profile' job.created_by.id %}">{{job.created_by.username}}</a>
-            <h5> <a href="{% url 'job' job.id %}"> {{job.title}}<a></h5>
-                <h4>{{job.salary}}-zl</h4>
-                <small>{{job.category.name}}</small>
-            <hr>
-        </div>
-        {%endfor%}
-    </div>
-</div>
+</html>
+
 
 {% endblock content %}

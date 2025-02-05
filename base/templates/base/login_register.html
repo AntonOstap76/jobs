@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if page == 'login' %}
-<div>
+<div class="mt-20">
     <form method="POST" action="">
         {%csrf_token%}
 
@@ -20,7 +20,7 @@
 
 {%else%}
 
-<div>
+<div  class="mt-20">
     <form method="POST" action="">
         {%csrf_token%}
 

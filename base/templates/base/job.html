@@ -1,33 +1,33 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<div class="job-detail-container">
-    <div class="job-title-jobs">
-        <h1>{{ job.title }}</h1>
+<div class="max-w-3xl mx-auto mt-20 p-6 bg-white rounded-lg shadow-lg space-y-6">
+    <div class="text-center">
+        <h1 class="text-3xl font-semibold text-gray-800">{{ job.title }}</h1>
     </div>
 
-    <div class="job-category-jobs">
-        <p><strong>Category:</strong> {{ job.category.name }}</p>
+    <div class="flex justify-between items-center border-b pb-4">
+        <p class="text-lg font-medium text-gray-600"><strong>Category:</strong> {{ job.category.name }}</p>
     </div>
 
-    <div class="job-description-jobs">
-        <p><strong>Job Description:</strong> {{ job.description }}</p>
+    <div class="space-y-4">
+        <p class="text-lg text-gray-800"><strong>Job Description:</strong> {{ job.description }}</p>
     </div>
 
-    <div class="job-salary-jobs">
-        <h4><strong>Salary:</strong> {{ job.salary }}-zl</h4>
+    <div class="flex justify-between items-center border-b pb-4">
+        <h4 class="text-xl font-semibold text-gray-800"><strong>Salary:</strong> {{ job.salary }}-zl</h4>
     </div>
 
-    <div class="job-city-jobs">
-        <h2><strong>City:</strong> {{ job.location }}</h2>
+    <div class="flex justify-between items-center border-b pb-4">
+        <h2 class="text-lg font-medium text-gray-700"><strong>City:</strong> {{ job.location }}</h2>
     </div>
 
-    <div class="job-company-jobs">
-        <h2><strong>Our Company:</strong> {{ job.company }}</h2>
+    <div class="flex justify-between items-center border-b pb-4">
+        <h2 class="text-lg font-medium text-gray-700"><strong>Our Company:</strong> {{ job.company }}</h2>
     </div>
 
-    <div class="job-posted-info">
-        <small>Job posted {{ job.posted|timesince }} ago</small>
+    <div class="text-right">
+        <small class="text-sm text-gray-500">Job posted {{ job.posted|timesince }} ago</small>
     </div>
 </div>
 {% endblock content %}
